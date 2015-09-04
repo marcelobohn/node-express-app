@@ -17,4 +17,15 @@ router.get('/find/:text', function(req, res){
   res.send('param get url: ' + text);
 });
 
+router.get('/list', function(req, res) {
+    var db = req.db;
+    var collection = db.get('fruit');
+    collection.find({},{},function(e,docs){
+        res.render('list', {
+            "list" : docs
+        });
+	//res.send('Retorno: ' + docs);
+    });
+});
+
 module.exports = router;
