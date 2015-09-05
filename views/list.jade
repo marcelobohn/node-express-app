@@ -1,3 +1,9 @@
-each item, i in list
-  li
-    =item.name
+extends layout
+
+block content
+  #fruitList
+    ul
+      each item, i in list
+        li
+          =item.name + ' - ' + item.color + ' | '
+          a(href="#", rel="#{item._id}", class="linkdeletefruit")= "delete"

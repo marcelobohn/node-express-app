@@ -18,13 +18,46 @@ router.get('/find/:text', function(req, res){
 });
 
 router.get('/list', function(req, res) {
+  var db = req.db;
+  var collection = db.get('fruit');
+  collection.find({},{},function(e,docs){
+      res.render('list', {
+          "list" : docs
+      });
+  });
+});
+
+router.get('/new', function(req, res) {
+    res.render('new', { title: 'Add New Fruit' });
+});
+
+router.post('/addfruit', function(req, res) {
+    var db = req.db;
+
+    var fruitName = req.body.name;
+    var fruitColor = req.body.color;
+
+    var collection = db.get('fruit');
+
+    collection.insert({
+        "name" : fruitName,
+        "color" : fruitColor
+    }, function (err, doc) {
+        if (err) {
+            res.send("There was a problem adding the information to the database.");
+        }
+        else {
+            res.redirect("list");
+        }
+    });
+});
+
+router.delete('/delete/:id', function(req, res) {
     var db = req.db;
     var collection = db.get('fruit');
-    collection.find({},{},function(e,docs){
-        res.render('list', {
-            "list" : docs
-        });
-	//res.send('Retorno: ' + docs);
+    var fruitToDelete = req.params.id;
+    collection.remove({ '_id' : fruitToDelete }, function(err) {
+        res.send((err === null) ? { msg: '' } : { msg:'error: ' + err });
     });
 });
 

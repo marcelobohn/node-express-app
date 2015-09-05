@@ -1,0 +1,12 @@
+extends layout
+
+block content
+  h1= title
+  form(action='/addfruit',method='post')
+    div
+      label(for='name') Name:
+      input(id='name',type='text',name='name')
+    div
+      label(for='color') Color:
+      input(id='color',type='text',name='color')
+    input(type='submit',value='post')
